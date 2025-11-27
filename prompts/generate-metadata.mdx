@@ -1,0 +1,115 @@
+---
+title: "Generate Metadata"
+description: "Creates optimized SEO meta titles and descriptions for documentation pages"
+version: "1.0.0"
+variables:
+  content: "The documentation content to generate metadata for"
+  additionalContext: "Optional additional context to help optimize the metadata"
+model_parameters:
+  temperature: 0.7
+  frequency_penalty: 0.2
+  presence_penalty: 0.2
+  recommended_models:
+    - "gpt-4o"
+    - "claude-3-opus"
+    - "claude-3-sonnet"
+metadata:
+  author: "Docs AI Buddy Team"
+  created_at: "2025-10-16T00:00:00Z"
+  tags:
+    - "documentation"
+    - "seo"
+    - "metadata"
+    - "titles"
+    - "descriptions"
+---
+
+# Generate Metadata Prompt
+
+## Full Metadata Generation Prompt (Title and Description)
+
+```
+As a world-class Search Engine Optimization (SEO) expert, your task is to create an optimized meta title and meta description for the provided content. Using your expertise in keyword research, SEO-friendly content creation, and understanding of search engine algorithms, create compelling and effective metadata that will boost search engine rankings.
+
+Requirements:
+- Meta title must be 55 characters or less.
+- Meta description must be 160 characters or less.
+- Be compelling for users to click through.
+- Use active voice and clear language.
+- Accurately summarize the key value proposition.
+- Include the character count for both the title and description in parentheses after each suggestion.
+- Provide 3 samples for both the meta title and meta description.
+
+Format EXACTLY as follows:
+Title: [Your title here] (XX characters)
+Description: [Your description here] (XX characters)
+
+Content:
+{{content}}
+{{additionalContext}}
+```
+
+## Description-Only Prompt
+
+```
+As a world-class Search Engine Optimization (SEO) expert, your task is to create an optimized meta description for the provided content. Using your expertise in keyword research, SEO-friendly content creation, and understanding of search engine algorithms, create a compelling and effective meta description that will boost search engine rankings.
+
+Requirements:
+- Meta description must be 160 characters or less.
+- Be compelling for users to click through.
+- Use active voice and clear language.
+- Accurately summarize the key value proposition.
+- Include the character count for the description in parentheses after each suggestion.
+- Provide 3 samples for the meta description.
+
+Format EXACTLY as follows:
+Description: [Your description here] (XX characters)
+
+Content:
+{{content}}
+{{additionalContext}}
+```
+
+## Examples
+
+#### Input
+
+Content:
+```
+# Sending SMS Messages
+
+This guide shows you how to send SMS messages using an API. You'll learn how to set up your development environment, authenticate your requests, and send your first message.
+```
+
+#### Output
+
+```
+Title: Send Your First SMS Message with an API (48 characters)
+Description: Learn how to set up your environment, authenticate requests, and send SMS messages using an API in this step-by-step guide for developers new to messaging. (156 characters)
+```
+
+### Evaluation Notes
+
+#### Edge Cases
+
+- **Very Technical Content**: Focus on clarity while maintaining accuracy of technical concepts.
+- **Multiple Key Topics**: Prioritize the most important aspects for the metadata.
+- **Very Short Content**: Extract the core value proposition without embellishment.
+- **Content with Code Examples**: Focus on the purpose of the code rather than specific implementation details.
+- **Marketing-Heavy Content**: Extract substantive information and present it in a direct, technical manner.
+
+#### Failure Modes
+
+- **Exceeding Character Limits**: May generate titles or descriptions that exceed the specified character limits.
+- **Starting with Brand Names**: May incorrectly start titles with brand names despite instructions.
+- **Generic Descriptions**: Sometimes produces vague descriptions that don't capture the unique value of the content.
+- **Keyword Stuffing**: May overload metadata with keywords at the expense of readability.
+- **Missing Key Value Propositions**: Might focus on secondary aspects while missing the primary purpose of the content.
+
+#### Improvement Suggestions
+
+1. Add keyword targeting option to focus metadata on specific search terms.
+2. Include competitor analysis to differentiate content positioning.
+3. Implement A/B testing capability with multiple metadata variants.
+4. Add support for localization considerations in different markets.
+5. Create vertical-specific optimizations for different industries.

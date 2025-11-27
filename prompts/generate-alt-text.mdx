@@ -1,0 +1,120 @@
+---
+title: "Generate Alt Text"
+description: "Creates concise and informative alt text for images in technical documentation"
+version: "1.0.0"
+variables:
+  imagePath: "File path or filename of the uploaded image to generate alt text for. The key is that the LLM must be able to read the image contents."
+model_parameters:
+  temperature: 1.0
+  max_tokens: 256
+  top_p: 1
+  frequency_penalty: 0
+  presence_penalty: 0
+  recommended_models:
+    - "claude-3.5-sonnet" # Anthropic Claude 3.5 Sonnet, optimized for accessibility tasks
+    - "gpt-4o" # GPT-4o, versatile and widely used for generating concise alt text
+metadata:
+  author: "Docs AI Buddy Team"
+  created_at: "2025-10-16T00:00:00Z"
+  tags:
+    - "accessibility"
+    - "documentation"
+    - "images"
+    - "alt-text"
+---
+
+# Generate Alt Text Prompt
+
+## Prompt
+
+```
+Create concise alt text for images in technical documentation by extracting essential text and describing key elements.
+
+- Focus on useful, information-rich content using appropriate keywords.
+- Ensure alt text is less than 125 characters.
+- Identify specific image types like logos, illustrations, or cartoons.
+- Avoid duplicating adjacent text.
+- End the alt text with a period.
+- Do not use semicolons.
+
+# Steps
+
+1. Extract text from the image.
+2. Identify key elements to highlight.
+3. Construct a concise, information-rich alt text sentence.
+4. Ensure the alt text is under 125 characters and adheres to the guidelines.
+
+# Output Format
+
+Alt text should be a single sentence, ending with a period, and less than 125 characters long.
+
+{{imagePath}}
+```
+
+## Examples
+
+### Example 1
+
+#### Input
+
+An image of a setup screen for a button configuration tool that shows fields for URL and phone number.
+
+#### Output
+
+```
+Call to Action button setup with options for Visit website or Phone, including fields for URL and phone number.
+```
+
+### Example 2
+
+#### Input
+
+A screenshot of an error message dialog showing "Failed to connect to service. Error code: 4032"
+
+#### Output
+
+```
+Error dialog showing "Failed to connect to service" with error code 4032.
+```
+
+### Example 3
+
+#### Input
+
+A diagram showing a flowchart of API authentication steps with boxes for "Request Token", "Validate Credentials", and "Return Access Token".
+
+#### Output
+
+```
+Flowchart showing API authentication process with three steps: Request Token, Validate Credentials, and Return Access Token.
+```
+
+## Evaluation Notes
+
+### Edge Cases
+
+- **Images with Excessive Text**: Prioritize the most important information to stay within the character limit.
+- **Low Quality or Blurry Images**: Focus on what can be reasonably identified.
+- **Complex Technical Diagrams**: Provide a high-level summary rather than describing every element.
+- **Screenshots with UI Elements**: Focus on the purpose of the UI rather than describing every button and element.
+- **Images with Multiple Distinct Sections**: Prioritize the main subject while acknowledging other important elements.
+
+### Failure Modes
+
+- **Exceeding Character Limit**: May generate alt text that exceeds the 125 character limit, requiring truncation.
+- **Missing Critical Information**: Might focus on less important visual elements while missing the core purpose of the image.
+- **Over-describing**: Can sometimes provide excessive detail for simple images, adding unnecessary information.
+- **Misidentification**: May incorrectly identify elements in complex or ambiguous images.
+- **Generic Descriptions**: Sometimes generates vague descriptions that don't add meaningful context (e.g., "Screenshot of a webpage").
+
+### Improvement Suggestions
+
+1. Add functionality to handle image context from surrounding document text.
+2. Implement tiered alt text generation (brief and detailed versions).
+3. Create specialized handling for common technical image types (code snippets, API responses, error messages).
+4. Add option to generate both alt text and longer descriptions for complex images.
+5. Implement detection for decorative images that may require minimal alt text.
+
+## Learn More
+
+For more details on how we use automation scripts and LLM prompts to enhance documentation accessibility, check out our blog post: [Developers Docs Accessibility Automation with LLM Prompts](https://www.twilio.com/en-us/blog/developers/docs-accessibility-automation-llm-prompts).

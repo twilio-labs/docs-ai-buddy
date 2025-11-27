@@ -1,0 +1,106 @@
+---
+title: "Simplify Jargon"
+description: "Identifies and simplifies complex technical jargon in documentation"
+version: "1.0.0"
+variables:
+  text: "The documentation text containing technical jargon to simplify"
+model_parameters:
+  temperature: 0.7
+  max_tokens: 500
+  top_p: 1
+  frequency_penalty: 0
+  presence_penalty: 0
+  recommended_models:
+    - "gpt-4o"
+    - "claude-3-opus"
+metadata:
+  author: "Docs AI Buddy Team"
+  created_at: "2025-10-16T00:00:00Z"
+  tags:
+    - "documentation"
+    - "simplification"
+    - "jargon"
+    - "accessibility"
+---
+
+# Simplify Jargon Prompt
+
+This document provides an overview of the "Simplify Jargon" prompt, designed to make technical documentation more accessible by simplifying complex terms and defining acronyms. Contributors can use this guide to understand the prompt's functionality and suggest improvements.
+
+## Prompt Overview
+
+### Prompt
+
+You are a specialized technical writing assistant designed to simplify complex technical content while maintaining technical accuracy and implementing best practices for clear communication.
+
+Your task is to simplify the provided content by replacing technical jargon with plain language and defining all acronyms. Ensure that the simplified content remains accurate and clear.
+
+**Important Notes:**
+1. Do NOT use bold formatting with ** markdown anywhere in your response. Do not put ** around technical terms in either the Revised Text section or the Explained Jargon section.
+2. For general technical terms, include hyperlinks to relevant Wikipedia pages whenever available, using markdown format: "[WebRTC](https://en.wikipedia.org/wiki/WebRTC)". This applies to both the Revised Text and Explained Jargon sections.
+3. CRUCIAL: Do NOT add any extra information or explanations that are not directly implied in the original text. Simplify the language without elaborating or providing additional context beyond what's already there.
+4. Incorporate technical jargon explanations directly within the revised text in a natural, flowing way, but do not expand on definitions or add new information not present in the original.
+
+**Example:**
+
+```
+Input:
+The API utilizes a RESTful architecture to handle CRUD operations on resources.
+
+Output:
+The API uses a structure (Representational State Transfer, or REST) to manage creating, reading, updating, and deleting (CRUD) data entities.
+```
+
+## Acronym Handling
+
+The jargon simplifier will always define acronyms. However, if the user is editing a specific section of a larger document, the acronym may already be defined elsewhere. In such cases, users should verify the context and avoid duplicating definitions unnecessarily.
+
+## Examples
+
+#### Input
+
+```
+Programmable Video uses an encryption mechanism provided by Amazon clients called "envelope encryption". Here is how it works:
+
+First, you create a public cryptography key pair. You provide the public key, but you keep the private key secret and safe.
+```
+
+#### Output
+
+```
+Revised Text:
+
+Programmable Video uses an encryption mechanism provided by Amazon clients called "envelope encryption". Here is how it works:
+
+First, you create a public cryptography key pair. You provide the public key, but you keep the private key secret and safe.
+
+Flagged Content:
+
+1. "public cryptography key pair" - A pair of mathematically related keys (public and private) used for encryption and decryption in asymmetric cryptography.
+```
+
+### Evaluation Notes
+
+#### Edge Cases
+
+- **Product/API Names**: Preserve product names and API resource names, not flagging or explaining them unless specifically requested.
+- **Code Snippets**: Avoid modifying or explaining code unless specifically instructed.
+- **Highly Technical Content**: Provide explanations rather than changing terminology when simplification risks losing precision.
+- **Already Simple Content**: Detect when content is already accessible and avoid unnecessary changes.
+- **Multiple Occurrences**: Explain terms only on first use to maintain clarity and avoid redundancy.
+
+#### Failure Modes
+
+- **Over-simplification**: Simplifies technical terms that are appropriate for the intended audience, losing necessary precision.
+- **Under-simplification**: Misses jargon that would be unfamiliar to the target audience.
+- **Incorrect Explanations**: Provides inaccurate explanations for highly technical or specialized terms.
+- **Inconsistent Handling**: Handles the same term differently in different parts of the document.
+- **Breaking Formatting**: Loses structural elements like bullet points or code formatting in the revised version.
+
+#### Improvement Suggestions
+
+1. Add a target audience parameter to adjust simplification level based on technical expertise.
+2. Include an option to provide a custom glossary of terms that should or should not be simplified.
+3. Add support for maintaining document structure, including headings, lists, and formatting.
+4. Include readability score calculation in the output to measure accessibility.
+5. Provide tiered simplification options (light, moderate, comprehensive) to suit different needs.

@@ -1,0 +1,113 @@
+---
+title: "Auto Edit Document"
+description: "Improves technical documentation based on style guides and quality rubrics"
+version: "1.0.0"
+variables:
+  styleGuide: "The style guide to follow when editing the document"
+  rubric: "Quality criteria to evaluate and improve the document against"
+  draftContent: "The draft content to be edited"
+  reviewIndividually: "Boolean indicating whether to provide individual suggestions (true) or a complete rewrite (false)"
+model_parameters:
+  temperature: 0.7
+  max_tokens: 16000
+  frequency_penalty: 0
+  presence_penalty: 0
+  recommended_models:
+    - "o3" # Optimized for performance and streaming in production
+    - "gpt-4o" # Versatile and widely accessible for general use
+metadata:
+  author: "Docs AI Buddy Team"
+  created_at: "2025-10-16T00:00:00Z"
+  tags:
+    - "documentation"
+    - "editing"
+    - "style guide"
+    - "writing"
+---
+
+# Auto Edit Document Prompt
+
+This document provides an overview of the "Auto Edit Document" prompt, designed to improve technical documentation by applying style guides and quality rubrics. Contributors can use this guide to understand the prompt's functionality and suggest improvements.
+
+## Prompt Overview
+
+### Standard Editing Mode
+
+Focuses on rewriting the entire document to improve grammar, clarity, and adherence to the provided style guide and rubric.
+
+```
+Your task is to rewrite the provided content to improve grammar, clarity, and adherence to the given style guide and rubric.
+
+Style Guide:
+- Use active voice instead of passive voice.
+- Avoid jargon and explain technical terms.
+- Use short, direct sentences.
+
+Rubric:
+- Content should be clear and concise.
+- Code examples should be properly formatted.
+- All acronyms should be expanded on first use.
+
+Draft Content:
+{{draftContent}}
+```
+
+## Examples
+
+### Example 1: Standard Editing Mode
+
+#### Input
+
+Style Guide:
+```
+Use active voice instead of passive voice.
+Avoid jargon and explain technical terms.
+Use short, direct sentences.
+```
+
+Rubric:
+```
+Content should be clear and concise.
+Code examples should be properly formatted.
+All acronyms should be expanded on first use.
+```
+
+Draft Content:
+```
+# Accessing Data
+
+Developers can use the app to manage and organize their data efficiently. The app ensures compliance with industry standards and provides clear instructions for secure data handling.
+
+Data is presented in a structured and readable format.
+```
+
+#### Output
+
+```
+<Revised_Content>
+# Accessing Data
+
+Developers can use the app to manage and organize their data efficiently. The app ensures compliance with industry standards and provides clear instructions for secure data handling.
+
+Data is presented in a structured and readable format.
+</Revised_Content>
+
+<Changes_Made>
+1. Simplified the description of the app's functionality.
+  * **Original text**: "The app can be utilized by developers to access data. Industry-standard principles are followed by our app. Requests are authenticated using secure tokens."
+  * **Revised Text**: "Developers can use the app to manage and organize their data efficiently. The app ensures compliance with industry standards and provides clear instructions for secure data handling."
+  * **Explanation**: Removed references to APIs and Python code, focusing on the app's core functionality.
+  * **Style Guidance**: "Use active voice instead of passive voice."
+  * **Rubric**: "Content should be clear and concise."
+</Changes_Made>
+```
+
+## Contribution Guidelines
+
+We welcome contributions to improve this prompt. Here's how you can help:
+
+1. **Report Issues**: If you encounter any problems or have suggestions, please open an issue in the repository.
+2. **Submit Pull Requests**: Feel free to submit changes that enhance the prompt's clarity, functionality, or examples.
+3. **Follow the Style Guide**: Ensure your contributions align with the provided style guide and rubric.
+
+Thank you for helping us make this tool better for the community!
