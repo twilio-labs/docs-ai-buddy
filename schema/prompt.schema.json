@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Prompt Schema",
+  "description": "Schema for defining LLM prompts in the Docs AI Buddy project",
+  "type": "object",
+  "required": [
+    "title",
+    "description",
+    "version",
+    "prompt",
+    "variables"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "The title of the prompt"
+    },
+    "description": {
+      "type": "string",
+      "description": "A brief description of what the prompt does"
+    },
+    "version": {
+      "type": "string",
+      "description": "The version of the prompt using semantic versioning (e.g. 1.0.0)",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "prompt": {
+      "type": "string",
+      "description": "The prompt text with variable placeholders enclosed in {{variable_name}}"
+    },
+    "variables": {
+      "type": "object",
+      "description": "A map of variable names to their descriptions",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "examples": {
+      "type": "array",
+      "description": "Example usages of the prompt",
+      "items": {
+        "type": "object",
+        "required": ["input", "output"],
+        "properties": {
+          "input": {
+            "type": "object",
+            "description": "Example input values for the variables",
+            "additionalProperties": true
+          },
+          "output": {
+            "type": "string",
+            "description": "Example expected output"
+          },
+          "explanation": {
+            "type": "string",
+            "description": "Optional explanation of the example"
+          }
+        }
+      }
+    },
+    "evaluation_notes": {
+      "type": "object",
+      "description": "Notes on how to evaluate the prompt's performance",
+      "properties": {
+        "edge_cases": {
+          "type": "array",
+          "description": "Edge cases to consider when evaluating the prompt",
+          "items": {
+            "type": "string"
+          }
+        },
+        "failure_modes": {
+          "type": "array",
+          "description": "Ways the prompt might fail",
+          "items": {
+            "type": "string"
+          }
+        },
+        "improvement_suggestions": {
+          "type": "array",
+          "description": "Suggestions for improving the prompt",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "model_parameters": {
+      "type": "object",
+      "description": "Recommended parameters for the model",
+      "properties": {
+        "temperature": {
+          "type": "number",
+          "description": "The temperature parameter for the model (controls randomness)",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "max_tokens": {
+          "type": "integer",
+          "description": "The maximum number of tokens to generate",
+          "minimum": 1
+        },
+        "top_p": {
+          "type": "number",
+          "description": "The top-p parameter for the model (controls diversity)",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "frequency_penalty": {
+          "type": "number",
+          "description": "The frequency penalty parameter for the model",
+          "minimum": -2,
+          "maximum": 2
+        },
+        "presence_penalty": {
+          "type": "number",
+          "description": "The presence penalty parameter for the model",
+          "minimum": -2,
+          "maximum": 2
+        },
+        "recommended_models": {
+          "type": "array",
+          "description": "List of models recommended for this prompt",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about the prompt",
+      "properties": {
+        "author": {
+          "type": "string",
+          "description": "The author of the prompt"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "When the prompt was created (ISO date)",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "description": "When the prompt was last updated (ISO date)",
+          "format": "date-time"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the prompt",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
