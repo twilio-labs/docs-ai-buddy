@@ -1,0 +1,104 @@
+name: Prompt Feedback
+
+description: Submit feedback on an existing prompt
+title: "[Prompt Feedback]: "
+labels: ["prompt-feedback"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Prompt Feedback
+
+        Thanks for taking the time to submit prompt feedback! Please provide as much detail as possible to help us improve.
+
+  - type: dropdown
+    id: prompt-name
+    attributes:
+      label: Which prompt are you providing feedback on?
+      options:
+        - Simplify Jargon
+        - Generate Alt Text
+        - Auto Edit Document
+        - Generate Metadata
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: prompt-version
+    attributes:
+      label: Prompt Version
+      description: "Specify the version of the prompt (found at the top of the file)."
+      placeholder: "e.g., 1.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feedback-type
+    attributes:
+      label: Type of Feedback
+      options:
+        - Performance Issue (quality of output)
+        - Edge Case Handling
+        - Variable/Parameter Issue
+        - Example Improvement
+        - Documentation Issue
+        - Other (please specify)
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: prompt-input
+    attributes:
+      label: Input Used
+      description: "Provide the input you used with the prompt."
+      placeholder: "Copy and paste your input here."
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-output
+    attributes:
+      label: Current Output
+      description: "What output did you receive from the prompt?"
+      placeholder: "Copy and paste the actual output here."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-output
+    attributes:
+      label: Expected Output
+      description: "What did you expect or hope to see instead?"
+      placeholder: "Describe what you expected the output to be."
+    validations:
+      required: true
+
+  - type: textarea
+    id: improvement-suggestion
+    attributes:
+      label: Suggested Improvement
+      description: "Provide specific suggestions for improving the prompt."
+      placeholder: "Your suggestions for improving the prompt."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: model-used
+    attributes:
+      label: Model Used
+      description: "Which model did you use with this prompt?"
+      options:
+        - GPT-4
+        - GPT-4o
+        - GPT-3.5 Turbo
+        - Claude 3 Opus
+        - Claude 3 Sonnet
+        - Claude 3 Haiku
+        - Llama 3
+        - Other (please specify in additional context)
+    validations:
+      required: true
