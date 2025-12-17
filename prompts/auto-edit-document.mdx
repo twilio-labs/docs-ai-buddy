@@ -29,6 +29,10 @@ metadata:
 
 This document provides an overview of the "Auto Edit Document" prompt, designed to improve technical documentation by applying style guides and quality rubrics. Contributors can use this guide to understand the prompt's functionality and suggest improvements.
 
+## Style Guide and Rubric Approach
+
+This prompt refers to **Google's Developer Style Guide** as the foundational style guide for technical documentation. In addition to Google's guidelines, we incorporate our own **custom quality rubric** to evaluate and improve documentation quality across specific categories relevant to our documentation needs.
+
 ## Prompt Overview
 
 ### Standard Editing Mode
@@ -44,9 +48,15 @@ Style Guide:
 - Use short, direct sentences.
 
 Rubric:
-- Content should be clear and concise.
-- Code examples should be properly formatted.
-- All acronyms should be expanded on first use.
+Evaluate and improve the content based on these categories:
+
+- **Readability (REA)**: The document should be easy to read for a variety of audiences, including screen-reader users, colorblind users, users whose native language isn't English, users on smaller screen sizes and widths. 
+- **Clarity (CLA)**: The document should be free from ambiguity, presented in plain English, and use accurate and consistent terminology and formatting. 
+- **Context (CON)**: The document should be presented with relevant context: intended audience, prerequisite knowledge, hardware and software requirements, links to associated content and resources, next steps. The document should clearly inform the user of what is contained within the page.
+- **Accuracy (ACC)**: The document should be accurate both technically and linguistically. The document should outline every step required of a user without assuming or skipping relevant steps. (Can you do exactly and only what the document says in order to complete the task? Can you put in a string if the documentation says ""string""? Is the output accurate?)
+- **Organization (ORG)**: The document should be logically organized according to the task the reader wants to accomplish.
+- **Findability (FIN)**: The document should be named and structured in a way that allows users to find the document and move between relevant sections within the document. 
+
 
 Draft Content:
 {{draftContent}}
@@ -60,9 +70,12 @@ Draft Content:
 
 Style Guide:
 ```
-Use active voice instead of passive voice.
-Avoid jargon and explain technical terms.
-Use short, direct sentences.
+Follow Google's Developer Style Guide with emphasis on:
+- Use active voice instead of passive voice
+- Write in second person (use "you" rather than "we")
+- Use present tense
+- Be concise and clear
+- Avoid jargon by only explaining technical terms when necessary
 ```
 
 Rubric:
