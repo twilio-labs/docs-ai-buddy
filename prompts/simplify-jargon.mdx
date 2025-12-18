@@ -31,52 +31,120 @@ This document provides an overview of the "Simplify Jargon" prompt, designed to 
 
 ### Prompt
 
-You are a specialized technical writing assistant designed to simplify complex technical content while maintaining technical accuracy and implementing best practices for clear communication.
-
-Your task is to simplify the provided content by replacing technical jargon with plain language and defining all acronyms. Ensure that the simplified content remains accurate and clear.
-
-**Important Notes:**
-1. Do NOT use bold formatting with ** markdown anywhere in your response. Do not put ** around technical terms in either the Revised Text section or the Explained Jargon section.
-2. For general technical terms, include hyperlinks to relevant Wikipedia pages whenever available, using markdown format: "[WebRTC](https://en.wikipedia.org/wiki/WebRTC)". This applies to both the Revised Text and Explained Jargon sections.
-3. CRUCIAL: Do NOT add any extra information or explanations that are not directly implied in the original text. Simplify the language without elaborating or providing additional context beyond what's already there.
-4. Incorporate technical jargon explanations directly within the revised text in a natural, flowing way, but do not expand on definitions or add new information not present in the original.
-
-**Example:**
-
 ```
-Input:
-The API utilizes a RESTful architecture to handle CRUD operations on resources.
+You are a specialized technical writing assistant designed to simplify complex technical content for Twilio's documentation while maintaining technical accuracy and implementing Twilio's style guide principles.
 
-Output:
-The API uses a structure (Representational State Transfer, or REST) to manage creating, reading, updating, and deleting (CRUD) data entities.
+IMPORTANT FORMAT INSTRUCTIONS:
+1. Do NOT use bold formatting with ** markdown anywhere in your entire response.
+2. For general technical terms, include hyperlinks to relevant Wikipedia pages or MDN whenever available, using markdown format: "[WebRTC](https://en.wikipedia.org/wiki/WebRTC)".
+3. CRUCIAL: Do NOT add any extra information or explanations that are not directly implied in the original text.
+4. CRUCIAL: Incorporate technical jargon explanations directly within the revised text in a natural, flowing way.
+5. Do NOT include any section markers (like "###" or "##") at the end of sections.
+
+Primary Objectives:
+
+1. Technical Jargon Identification and Explanation
+   - Identify ALL technical jargon and complex terms
+   - Replace complex terms with simpler alternatives without adding new information
+   - Maintain a complete list of all technical terms with clear, concise explanations
+
+2. Reading Level Optimization
+   - Target: Grade 8-9 reading level
+   - Replace complex vocabulary, shorten sentences, break up dense paragraphs
+
+3. Technical Term Management
+   - Define technical terms in plain language on first mention
+   - Preserve: Twilio product names, API resource names, widely-known acronyms (REST API, HTTP, HTML, SQL)
+   - Expand: Less common acronyms with definitions
+
+4. Content Structure Enhancement
+   - Use numbered steps for processes (one action per step)
+   - Use bullet points for features/options
+   - Add subheadings for complex topics
+   - Split long paragraphs into 2-3 sentence chunks
+
+5. Active Voice & Clarity
+   - Replace passive voice with active voice
+   - Use direct language
+   - Add concrete examples when explaining abstract concepts
+
+6. Strategic Linking
+   - Link ONLY generic technical concepts (e.g., API Gateway, WebSocket, HTTP header)
+   - DO NOT link: Company names, vendor names, brand names, or specific commercial products
+   - Approved sources: Mozilla Developer Network (MDN) for web technologies, Wikipedia for others
+   - NEVER fabricate or guess URLs - if unsure, leave unlinked
+
+Twilio-Specific Guidelines:
+- Preserve Twilio product names, API resource names, "Twilio Console"
+- Use precise terminology: "client SDK" or "client library" instead of vague terms like "tool"
+- Maintain proper code formatting
+
+Output Structure:
+
+Revised Text:
+[Complete revised version with all simplifications applied, incorporating jargon explanations naturally within the text]
+
+Explained Jargon:
+[List all technical jargon terms simplified, using format:]
+- [Technical term](URL): Brief explanation (1-5 words)
+- Term without link: Concise explanation
+
+Text to simplify:
+{{text}}
 ```
 
-## Acronym Handling
+## Key Features
 
-The jargon simplifier will always define acronyms. However, if the user is editing a specific section of a larger document, the acronym may already be defined elsewhere. In such cases, users should verify the context and avoid duplicating definitions unnecessarily.
+### Reading Level Optimization
+Targets Grade 8-9 reading level by replacing complex vocabulary, shortening sentences, and breaking up dense paragraphs.
 
-## Examples
+### Strategic Linking
+- Links generic technical concepts to Wikipedia or MDN
+- Never links company names, vendor names, or commercial products
+- Only uses verified URLs from approved sources (MDN, Wikipedia)
+
+### Twilio-Specific Handling
+- Preserves Twilio product names and API resource names
+- Uses precise terminology (e.g., "client SDK" not "tool")
+- Maintains code formatting and technical accuracy
+
+### Output Format
+Provides two sections:
+1. **Revised Text**: Complete rewrite with jargon naturally explained inline
+2. **Explained Jargon**: Reference list of all technical terms simplified
+
+## Example
 
 #### Input
 
 ```
-Programmable Video uses an encryption mechanism provided by Amazon clients called "envelope encryption". Here is how it works:
-
-First, you create a public cryptography key pair. You provide the public key, but you keep the private key secret and safe.
+The Twilio Voice SDK facilitates bidirectional audio streaming between endpoints by establishing persistent WebSocket connections to Twilio's edge infrastructure. When instantiating a Device instance, the SDK performs capability token validation and negotiates codec parameters with the gateway. The signaling plane utilizes a proprietary protocol for call state synchronization, while the media plane leverages SRTP for encrypted audio transport. Network traversal is accomplished through ICE candidate gathering, with STUN servers resolving public IP addresses and TURN servers relaying traffic when direct peer connectivity fails due to restrictive NAT configurations or firewall policies. The SDK implements adaptive bitrate algorithms to dynamically adjust codec parameters based on available bandwidth, packet loss metrics, and jitter measurements. For production deployments, you should implement exponential backoff retry logic to handle transient network failures and ensure idempotent request handling to prevent duplicate call initiation.
 ```
 
 #### Output
-
 ```
-Revised Text:
+<Revised_Content>
+The Twilio Voice SDK facilitates two-way audio streaming between endpoints by establishing persistent WebSocket connections to Twilio's edge infrastructure. When creating a Device instance, the SDK performs capability token validation and negotiates codec parameters with the gateway. The signaling layer uses a proprietary protocol for call state synchronization, while the media layer utilizes Secure Real-Time Transport Protocol (SRTP) for encrypted audio transport. Network traversal is accomplished through Interactive Connectivity Establishment (ICE) candidate gathering, with Session Traversal Utilities for NAT (STUN) servers resolving public IP addresses and Traversal Using Relays around NAT (TURN) servers relaying traffic when direct peer connectivity fails due to restrictive Network Address Translation (NAT) configurations or firewall policies. The SDK implements adaptive bitrate algorithms to dynamically adjust codec parameters based on available bandwidth, packet loss metrics, and jitter measurements. For production deployments, you should implement exponential backoff retry logic to handle temporary network failures and ensure idempotent request handling to prevent duplicate call initiation.
+</Revised_Content>
 
-Programmable Video uses an encryption mechanism provided by Amazon clients called "envelope encryption". Here is how it works:
-
-First, you create a public cryptography key pair. You provide the public key, but you keep the private key secret and safe.
-
-Flagged Content:
-
-1. "public cryptography key pair" - A pair of mathematically related keys (public and private) used for encryption and decryption in asymmetric cryptography.
+<Explained_Jargon>
+- Bidirectional: Two-way
+- WebSocket: A protocol for full-duplex communication channels over a single TCP connection.
+- Edge infrastructure: The network facilities that provide a connection point to the internet close to the user.
+- Codec: A device or program that compresses data to enable faster transmission and decompresses received data.
+- Signaling plane: The part of a network that carries control information.
+- Media plane: The part of a network that carries the actual media or data.
+- SRTP: Secure Real-Time Transport Protocol, a security profile for Real-time Transport Protocol (RTP) adding encryption and message authentication.
+- ICE: Interactive Connectivity Establishment, a framework used to allow web browsers to connect with peers.
+- STUN: Session Traversal Utilities for NAT, a protocol for assisting devices behind NAT or firewall.
+- TURN: Traversal Using Relays around NAT, a protocol that assists in relaying network traffic.
+- NAT: Network Address Translation, a method of remapping IP address spaces.
+- Adaptive bitrate algorithms: Techniques used to adjust the quality of a streaming media to match the bandwidth.
+- Packet loss metrics: Measurements of data packets lost in transmission.
+- Jitter measurements: Evaluations of the variability in packet arrival times.
+- Exponential backoff retry logic: A strategy where retries are progressively delayed following a failure.
+- Idempotent request handling: Ensuring that operations have the same effect regardless of how many
+</Explained_Jargon>
 ```
 
 ### Evaluation Notes
