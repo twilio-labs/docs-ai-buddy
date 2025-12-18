@@ -92,8 +92,8 @@ Targets Grade 8-9 reading level by replacing complex vocabulary, shortening sent
 - Never links company names, vendor names, or commercial products
 - Only uses verified URLs from approved sources (MDN, Wikipedia)
 
-### Twilio-Specific Handling
-- Preserves Twilio product names and API resource names
+### Product Name Handling
+- Preserves product names and API resource names
 - Uses precise terminology (e.g., "client SDK" not "tool")
 - Maintains code formatting and technical accuracy
 
@@ -107,35 +107,25 @@ Provides two sections:
 #### Input
 
 ```
-The Twilio Voice SDK facilitates bidirectional audio streaming between endpoints by establishing persistent WebSocket connections to Twilio's edge infrastructure. When instantiating a Device instance, the SDK performs capability token validation and negotiates codec parameters with the gateway. The signaling plane utilizes a proprietary protocol for call state synchronization, while the media plane leverages SRTP for encrypted audio transport. Network traversal is accomplished through ICE candidate gathering, with STUN servers resolving public IP addresses and TURN servers relaying traffic when direct peer connectivity fails due to restrictive NAT configurations or firewall policies. The SDK implements adaptive bitrate algorithms to dynamically adjust codec parameters based on available bandwidth, packet loss metrics, and jitter measurements. For production deployments, you should implement exponential backoff retry logic to handle transient network failures and ensure idempotent request handling to prevent duplicate call initiation.
+Participants publish media to a Selective Forwarding Unit (SFU). An SFU is a Media Server that decrypts the media, processes, re-encrypts, and routes the media tracks to the correct destinations. Media is not end-to-end encrypted, as the SFU performs a real-time decrypt-reencrypt step in memory when it routes the media to the participants. Clients only need to publish their media tracks once to the SFU, which clones and routes the media to the correct subscribers.
 ```
 
 #### Output
+
 ```
-<Revised_Content>
-The Twilio Voice SDK facilitates two-way audio streaming between endpoints by establishing persistent WebSocket connections to Twilio's edge infrastructure. When creating a Device instance, the SDK performs capability token validation and negotiates codec parameters with the gateway. The signaling layer uses a proprietary protocol for call state synchronization, while the media layer utilizes Secure Real-Time Transport Protocol (SRTP) for encrypted audio transport. Network traversal is accomplished through Interactive Connectivity Establishment (ICE) candidate gathering, with Session Traversal Utilities for NAT (STUN) servers resolving public IP addresses and Traversal Using Relays around NAT (TURN) servers relaying traffic when direct peer connectivity fails due to restrictive Network Address Translation (NAT) configurations or firewall policies. The SDK implements adaptive bitrate algorithms to dynamically adjust codec parameters based on available bandwidth, packet loss metrics, and jitter measurements. For production deployments, you should implement exponential backoff retry logic to handle temporary network failures and ensure idempotent request handling to prevent duplicate call initiation.
-</Revised_Content>
+<Revised_Text>
+Participants publish media to a Selective Forwarding Unit (SFU). An SFU is a Media Server that decrypts the media, processes, re-encrypts, and routes the media tracks to the correct destinations. Media is not end-to-end encrypted, as the SFU performs a real-time decrypt-reencrypt step in memory when it routes the media to the participants. Clients only need to publish their media tracks once to the SFU, which duplicates and routes the media to the correct subscribers.
+</Revised_Text>
 
 <Explained_Jargon>
-- Bidirectional: Two-way
-- WebSocket: A protocol for full-duplex communication channels over a single TCP connection.
-- Edge infrastructure: The network facilities that provide a connection point to the internet close to the user.
-- Codec: A device or program that compresses data to enable faster transmission and decompresses received data.
-- Signaling plane: The part of a network that carries control information.
-- Media plane: The part of a network that carries the actual media or data.
-- SRTP: Secure Real-Time Transport Protocol, a security profile for Real-time Transport Protocol (RTP) adding encryption and message authentication.
-- ICE: Interactive Connectivity Establishment, a framework used to allow web browsers to connect with peers.
-- STUN: Session Traversal Utilities for NAT, a protocol for assisting devices behind NAT or firewall.
-- TURN: Traversal Using Relays around NAT, a protocol that assists in relaying network traffic.
-- NAT: Network Address Translation, a method of remapping IP address spaces.
-- Adaptive bitrate algorithms: Techniques used to adjust the quality of a streaming media to match the bandwidth.
-- Packet loss metrics: Measurements of data packets lost in transmission.
-- Jitter measurements: Evaluations of the variability in packet arrival times.
-- Exponential backoff retry logic: A strategy where retries are progressively delayed following a failure.
-- Idempotent request handling: Ensuring that operations have the same effect regardless of how many
+- **Selective Forwarding Unit (SFU):** A Selective Forwarding Unit is a type of media server that manages the distribution of media streams by decrypting, processing, re-encrypting, and routing them.
+- **Media Server:** A Media Server is a server that processes and distributes media streams.
+- **Decrypt-reencrypt step:** This refers to the process where media is decrypted for processing and then re-encrypted before routing, indicating the media is not end-to-end encrypted.
+- **Media tracks:** These are individual streams of audio or video data that are published by clients to the SFU.
+- **Duplicates:** In this context, it means creating copies of media tracks to be sent to multiple subscribers.
 </Explained_Jargon>
-```
 
+```
 ### Evaluation Notes
 
 #### Edge Cases
