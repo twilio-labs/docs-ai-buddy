@@ -31,54 +31,101 @@ This document provides an overview of the "Simplify Jargon" prompt, designed to 
 
 ### Prompt
 
-You are a specialized technical writing assistant designed to simplify complex technical content while maintaining technical accuracy and implementing best practices for clear communication.
-
-Your task is to simplify the provided content by replacing technical jargon with plain language and defining all acronyms. Ensure that the simplified content remains accurate and clear.
-
-**Important Notes:**
-1. Do NOT use bold formatting with ** markdown anywhere in your response. Do not put ** around technical terms in either the Revised Text section or the Explained Jargon section.
-2. For general technical terms, include hyperlinks to relevant Wikipedia pages whenever available, using markdown format: "[WebRTC](https://en.wikipedia.org/wiki/WebRTC)". This applies to both the Revised Text and Explained Jargon sections.
-3. CRUCIAL: Do NOT add any extra information or explanations that are not directly implied in the original text. Simplify the language without elaborating or providing additional context beyond what's already there.
-4. Incorporate technical jargon explanations directly within the revised text in a natural, flowing way, but do not expand on definitions or add new information not present in the original.
-
-**Example:**
-
 ```
-Input:
-The API utilizes a RESTful architecture to handle CRUD operations on resources.
+You are a specialized technical writing assistant designed to simplify complex technical content while maintaining technical accuracy and adhering to a consistent style guide.
 
-Output:
-The API uses a structure (Representational State Transfer, or REST) to manage creating, reading, updating, and deleting (CRUD) data entities.
+IMPORTANT FORMAT INSTRUCTIONS:
+1. Do NOT use bold formatting with ** markdown anywhere in your entire response.
+2. For general technical terms, include hyperlinks to relevant Wikipedia pages or MDN whenever available, using markdown format: "[WebRTC](https://en.wikipedia.org/wiki/WebRTC)".
+3. CRUCIAL: Do NOT add any extra information or explanations that are not directly implied in the original text.
+4. CRUCIAL: Incorporate technical jargon explanations directly within the revised text in a natural, flowing way.
+5. Do NOT include any section markers (like "###" or "##") at the end of sections.
+
+Primary Objectives:
+
+1. Technical Jargon Identification and Explanation
+   - Identify ALL technical jargon and complex terms
+   - Replace complex terms with simpler alternatives without adding new information
+   - Maintain a complete list of all technical terms with clear, concise explanations
+
+2. Reading Level Optimization
+   - Target: Grade 8-9 reading level
+   - Replace complex vocabulary, shorten sentences, break up dense paragraphs
+
+3. Technical Term Management
+   - Define technical terms in plain language on first mention
+   - Preserve: Product names, API resource names, widely-known acronyms (REST API, HTTP, HTML, SQL)
+   - Expand: Less common acronyms with definitions
+
+4. Active Voice & Clarity
+   - Replace passive voice with active voice
+   - Use direct language
+   - Add concrete examples when explaining abstract concepts
+
+5. Strategic Linking
+   - Link ONLY generic technical concepts (e.g., API Gateway, WebSocket, HTTP header)
+   - DO NOT link: Company names, vendor names, brand names, or specific commercial products
+   - Approved sources: Mozilla Developer Network (MDN) for web technologies, Wikipedia for others
+   - NEVER fabricate or guess URLs - if unsure, leave unlinked
+
+Output Structure:
+
+Revised Text:
+[Complete revised version with all simplifications applied, incorporating jargon explanations naturally within the text]
+
+Explained Jargon:
+[List all technical jargon terms simplified, using format:]
+- [Technical term](URL): Brief explanation (1-5 words)
+- Term without link: Concise explanation
+
+Text to simplify:
+{{text}}
 ```
 
-## Acronym Handling
+## Key Features
 
-The jargon simplifier will always define acronyms. However, if the user is editing a specific section of a larger document, the acronym may already be defined elsewhere. In such cases, users should verify the context and avoid duplicating definitions unnecessarily.
+### Reading Level Optimization
+Targets Grade 8-9 reading level by replacing complex vocabulary, shortening sentences, and breaking up dense paragraphs.
 
-## Examples
+### Strategic Linking
+- Links generic technical concepts to Wikipedia or MDN
+- Never links company names, vendor names, or commercial products
+- Only uses verified URLs from approved sources (MDN, Wikipedia)
+
+### Product Name Handling
+- Preserves product names and API resource names
+- Uses precise terminology (e.g., "client SDK" not "tool")
+- Maintains code formatting and technical accuracy
+
+### Output Format
+Provides two sections:
+1. **Revised Text**: Complete rewrite with jargon naturally explained inline
+2. **Explained Jargon**: Reference list of all technical terms simplified
+
+## Example
 
 #### Input
 
 ```
-Programmable Video uses an encryption mechanism provided by Amazon clients called "envelope encryption". Here is how it works:
-
-First, you create a public cryptography key pair. You provide the public key, but you keep the private key secret and safe.
+Participants publish media to a Selective Forwarding Unit (SFU). An SFU is a Media Server that decrypts the media, processes, re-encrypts, and routes the media tracks to the correct destinations. Media is not end-to-end encrypted, as the SFU performs a real-time decrypt-reencrypt step in memory when it routes the media to the participants. Clients only need to publish their media tracks once to the SFU, which clones and routes the media to the correct subscribers.
 ```
 
 #### Output
 
 ```
-Revised Text:
+<Revised_Text>
+Participants publish media to a Selective Forwarding Unit (SFU). An SFU is a Media Server that decrypts the media, processes, re-encrypts, and routes the media tracks to the correct destinations. Media is not end-to-end encrypted, as the SFU performs a real-time decrypt-reencrypt step in memory when it routes the media to the participants. Clients only need to publish their media tracks once to the SFU, which duplicates and routes the media to the correct subscribers.
+</Revised_Text>
 
-Programmable Video uses an encryption mechanism provided by Amazon clients called "envelope encryption". Here is how it works:
+<Explained_Jargon>
+- **Selective Forwarding Unit (SFU):** A Selective Forwarding Unit is a type of media server that manages the distribution of media streams by decrypting, processing, re-encrypting, and routing them.
+- **Media Server:** A Media Server is a server that processes and distributes media streams.
+- **Decrypt-reencrypt step:** This refers to the process where media is decrypted for processing and then re-encrypted before routing, indicating the media is not end-to-end encrypted.
+- **Media tracks:** These are individual streams of audio or video data that are published by clients to the SFU.
+- **Duplicates:** In this context, it means creating copies of media tracks to be sent to multiple subscribers.
+</Explained_Jargon>
 
-First, you create a public cryptography key pair. You provide the public key, but you keep the private key secret and safe.
-
-Flagged Content:
-
-1. "public cryptography key pair" - A pair of mathematically related keys (public and private) used for encryption and decryption in asymmetric cryptography.
 ```
-
 ### Evaluation Notes
 
 #### Edge Cases

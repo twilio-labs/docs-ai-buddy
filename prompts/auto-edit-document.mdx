@@ -29,6 +29,10 @@ metadata:
 
 This document provides an overview of the "Auto Edit Document" prompt, designed to improve technical documentation by applying style guides and quality rubrics. Contributors can use this guide to understand the prompt's functionality and suggest improvements.
 
+## Style Guide and Rubric Approach
+
+This prompt uses our own **custom quality rubric** to evaluate and improve documentation quality across specific categories relevant to our documentation needs. Within the rubric, we reference both Google's Developer Style Guide and our internal style documentation as foundational style guides for technical documentation.
+
 ## Prompt Overview
 
 ### Standard Editing Mode
@@ -44,9 +48,15 @@ Style Guide:
 - Use short, direct sentences.
 
 Rubric:
-- Content should be clear and concise.
-- Code examples should be properly formatted.
-- All acronyms should be expanded on first use.
+Evaluate and improve the content based on these categories:
+
+- **Readability (REA)**: The document should be easy to read for a variety of audiences, including screen-reader users, colorblind users, users whose native language isn't English, users on smaller screen sizes and widths. 
+- **Clarity (CLA)**: The document should be free from ambiguity, presented in plain English, and use accurate and consistent terminology and formatting. 
+- **Context (CON)**: The document should be presented with relevant context: intended audience, prerequisite knowledge, hardware and software requirements, links to associated content and resources, next steps. The document should clearly inform the user of what is contained within the page.
+- **Accuracy (ACC)**: The document should be accurate both technically and linguistically. The document should outline every step required of a user without assuming or skipping relevant steps. (Can you do exactly and only what the document says in order to complete the task? Can you put in a string if the documentation says ""string""? Is the output accurate?)
+- **Organization (ORG)**: The document should be logically organized according to the task the reader wants to accomplish.
+- **Findability (FIN)**: The document should be named and structured in a way that allows users to find the document and move between relevant sections within the document. 
+
 
 Draft Content:
 {{draftContent}}
@@ -60,45 +70,88 @@ Draft Content:
 
 Style Guide:
 ```
-Use active voice instead of passive voice.
-Avoid jargon and explain technical terms.
-Use short, direct sentences.
+Follow your project's style guide, and refer to Google's Developer Style Guide for additional guidance as needed, particularly focusing on:
+- Use active voice instead of passive voice
+- Write in second person (use "you" rather than "we")
+- Use present tense
+- Be concise and clear
+- Avoid jargon by only explaining technical terms when necessary
 ```
 
 Rubric:
 ```
-Content should be clear and concise.
-Code examples should be properly formatted.
-All acronyms should be expanded on first use.
+Evaluate and improve the content based on these categories:
+
+- **Readability (REA)**: The document should be easy to read for a variety of audiences, including screen-reader users, colorblind users, users whose native language isn't English, users on smaller screen sizes and widths. 
+- **Clarity (CLA)**: The document should be free from ambiguity, presented in plain English, and use accurate and consistent terminology and formatting. 
+- **Context (CON)**: The document should be presented with relevant context: intended audience, prerequisite knowledge, hardware and software requirements, links to associated content and resources, next steps. The document should clearly inform the user of what is contained within the page.
+- **Accuracy (ACC)**: The document should be accurate both technically and linguistically. The document should outline every step required of a user without assuming or skipping relevant steps.
+- **Organization (ORG)**: The document should be logically organized according to the task the reader wants to accomplish.
+- **Findability (FIN)**: The document should be named and structured in a way that allows users to find the document and move between relevant sections within the document.
 ```
 
 Draft Content:
 ```
-# Accessing Data
+# API Authentication Guide
 
-Developers can use the app to manage and organize their data efficiently. The app ensures compliance with industry standards and provides clear instructions for secure data handling.
+The API authentication will be handled by JWT tokens. Tokens can be obtained from the developer portal.
 
-Data is presented in a structured and readable format.
+## Getting Your Token
+
+The following steps should be followed by developers:
+1. Login to the portal
+2. Your API key will be generated
+3. The token should be copied
+
+## Using the Token
+
+Once the token has been acquired, API requests can be made. The token needs to be included in the Authorization header.
+
+Example:
+GET /api/data
+Authorization: Bearer YOUR_TOKEN
+
+We recommend storing tokens securely. Tokens will expire after 24 hours and a new one will need to be obtained.
 ```
 
 #### Output
 
 ```
 <Revised_Content>
-# Accessing Data
+# API authentication guide
 
-Developers can use the app to manage and organize their data efficiently. The app ensures compliance with industry standards and provides clear instructions for secure data handling.
+Authenticate API requests with JWT tokens. You can obtain tokens from the developer portal.
 
-Data is presented in a structured and readable format.
+## Get your token
+
+The following steps should be followed by developers:
+1. Log in to the portal.
+2. Generate your API key.
+3. Copy the token.
+
+## Use the token
+
+After you obtain the token, you can make API requests. Include the token in the Authorization header.
+
+Example:
+`GET /api/data HTTP/1.1
+Authorization: Bearer _YOUR_TOKEN_`
+
+Store tokens securely. Tokens expire after 24 hours, after which you must obtain a new one.
 </Revised_Content>
 
 <Changes_Made>
-1. Simplified the description of the app's functionality.
-  * **Original text**: "The app can be utilized by developers to access data. Industry-standard principles are followed by our app. Requests are authenticated using secure tokens."
-  * **Revised Text**: "Developers can use the app to manage and organize their data efficiently. The app ensures compliance with industry standards and provides clear instructions for secure data handling."
-  * **Explanation**: Removed references to APIs and Python code, focusing on the app's core functionality.
-  * **Style Guidance**: "Use active voice instead of passive voice."
-  * **Rubric**: "Content should be clear and concise."
+1. Use sentence case for titles (Style Guide → Titles and headings). Keep the acronym API uppercase; lowercase the remaining words.
+2. Rewrite in active voice and present tense for clarity and concision (Style Guide → Voice and tone).
+3. Address the reader directly in second person (Style Guide → Person).
+4. Headings that explain what to do should use a present-tense verb phrase and sentence case (Style Guide → Titles and headings).
+5. Use imperative verbs, consistent structure, and end-of-sentence punctuation for procedural steps (Google → Procedures; Style Guide → Voice and tone).
+6. Convert heading to present-tense verb phrase and sentence case (Style Guide → Titles and headings).
+7. Switch to active voice and second person; replace vague passive construction (Style Guide → Voice and tone, Person).
+8. Use direct, imperative instruction and active voice (Style Guide → Voice and tone).
+9. Format the example as a fenced code block, label the HTTP verb GET, and use italicized UPPER_SNAKE_CASE for the placeholder (Style Guide → Code formatting, Placeholder text).
+10. Use imperative mood to give clear guidance (Style Guide → Voice and tone).
+11. Remove passive voice and clarify the action required (Style Guide → Voice and tone).
 </Changes_Made>
 ```
 
