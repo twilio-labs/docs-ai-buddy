@@ -8,12 +8,11 @@ variables:
   draftContent: "The draft content to be edited"
   reviewIndividually: "Boolean indicating whether to provide individual suggestions (true) or a complete rewrite (false)"
 model_parameters:
-  temperature: 0.7
-  max_tokens: 16000
+  max_completion_tokens: 16000 # Set a high token limit to avoid truncation
   frequency_penalty: 0
   presence_penalty: 0
   recommended_models:
-    - "o3" # Optimized for performance and streaming in production
+    - "o3" # Tested various OpenAI models and selected o3 for comprehensive edits
     - "gpt-4o" # Versatile and widely accessible for general use
 metadata:
   author: "Docs AI Buddy Team"
@@ -37,29 +36,85 @@ This prompt uses our own **custom quality rubric** to evaluate and improve docum
 
 ### Standard Editing Mode
 
-Focuses on rewriting the entire document to improve grammar, clarity, and adherence to the provided style guide and rubric.
+Focuses on rewriting the entire document to improve grammar, clarity, and adherence to the provided style guide and rubric including technical accuracy.
 
 ```
-Your task is to rewrite the provided content to improve grammar, clarity, and adherence to the given style guide and rubric.
+You are a world-class English technical writing editor. You improve a piece of documentation based on grammar, accuracy, style guide, and a set of rubric descriptions.
 
-Style Guide:
-- Use active voice instead of passive voice.
-- Avoid jargon and explain technical terms.
-- Use short, direct sentences.
+Proofread my writing above and fix any grammar and spelling mistakes. Make suggestions that will improve the clarity of my writing and make sure the content conforms to the provided rubric and style guide. The style guide and rubric rules are provided below.
 
-Rubric:
-Evaluate and improve the content based on these categories:
+Whenever you catch marketing language, please rewrite it to sound more like a technical overview.
 
-- **Readability (REA)**: The document should be easy to read for a variety of audiences, including screen-reader users, colorblind users, users whose native language isn't English, users on smaller screen sizes and widths. 
-- **Clarity (CLA)**: The document should be free from ambiguity, presented in plain English, and use accurate and consistent terminology and formatting. 
-- **Context (CON)**: The document should be presented with relevant context: intended audience, prerequisite knowledge, hardware and software requirements, links to associated content and resources, next steps. The document should clearly inform the user of what is contained within the page.
-- **Accuracy (ACC)**: The document should be accurate both technically and linguistically. The document should outline every step required of a user without assuming or skipping relevant steps. (Can you do exactly and only what the document says in order to complete the task? Can you put in a string if the documentation says ""string""? Is the output accurate?)
-- **Organization (ORG)**: The document should be logically organized according to the task the reader wants to accomplish.
-- **Findability (FIN)**: The document should be named and structured in a way that allows users to find the document and move between relevant sections within the document. 
+If you find a product or feature name that looks it should be written in code formatting, leave it as is.
 
+Do not remove any section of the documentation.
 
+The output should be structured as follows:
+
+<Revised_Content>
+Add the revised content of the documentation here, with all changes applied. It should be in markdown format.  Do NOT use ```yaml or ```markdown or any other language identifier at the beginning of the revised content.
+</Revised_Content>
+
+<Changes_Made>
+Add a list of changes made to the original content here. Each change should be described in a structured format as follows:
+  * Each change is a numbered list with a short summary of what you have done.
+  * For each change, there are five sub-bullets.
+  * The first one should have the original text, prefixed with "**Original text**:".
+  * The second one should have the revised text, prefixed with "**Revised Text**:".
+  * The third one should contain an explanation of why the change was made, prefixed with "**Explanation**:".
+  * The fourth one should have the style guidance applied, prefixed with "**Style Guidance**:".
+  * The fifth one should have the rubric applied, prefixed with "**Rubric**:". If no rubric or style guidance is used (such as correcting hyphenation for compound verbs), then write "No style guide or rubric applied."
+  * The style guide and rubric rule should be reported verbatim.
+</Changes_Made>
+
+<Style Guide>
+{{styleGuide}}
+</Style Guide>
+
+<Rubric>
+{{userRubric}}
+</Rubric>
+
+<Draft_Content>
+{{draftContent}}
+</Draft_Content>
 Draft Content:
 {{draftContent}}
+```
+
+### Individual Suggestion Mode
+
+Proposes individual text replacements to improve grammar, clarity, and adherence to the provided style guide and rubric, returning structured JSON suggestions for selective review and application.
+
+```
+You are a world-class English technical writing editor. Your task is to analyze a piece of technical documentation and propose a series of individual, atomic changes to improve it based on a provided style guide and quality rubric.
+
+Instead of rewriting the entire document, you must identify specific sections of text that can be improved and provide a replacement for each.
+
+You MUST return your response as a valid JSON object with a "suggestions" property containing an array of objects. Each object in the array represents a single, distinct suggestion and must have the following structure:
+{
+  "suggestions": [
+    {
+      "original": "The original text snippet to be replaced.",
+      "suggestion": "The suggested replacement text.",
+      "explanation": "A brief explanation of why the change was made, referencing the style guide or rubric if applicable."
+    }
+  ]
+}
+
+Analyze the user's draft content provided below and generate a JSON object with suggestions. Do not include any other text or formatting outside of the JSON object.
+
+<Style Guide>
+{{styleGuide}}
+</Style Guide>
+
+<Rubric>
+{{userRubric}}
+</Rubric>
+
+<Draft_Content>
+{{draftContent}}
+</Draft_Content>
 ```
 
 ## Examples
@@ -76,10 +131,24 @@ Follow your project's style guide, and refer to Google's Developer Style Guide f
 - Use present tense
 - Be concise and clear
 - Avoid jargon by only explaining technical terms when necessary
+Follow your project's style guide, and refer to Google's Developer Style Guide for additional guidance as needed, particularly focusing on:
+- Use active voice instead of passive voice
+- Write in second person (use "you" rather than "we")
+- Use present tense
+- Be concise and clear
+- Avoid jargon by only explaining technical terms when necessary
 ```
 
 Rubric:
 ```
+Evaluate and improve the content based on these categories:
+
+- **Readability (REA)**: The document should be easy to read for a variety of audiences, including screen-reader users, colorblind users, users whose native language isn't English, users on smaller screen sizes and widths. 
+- **Clarity (CLA)**: The document should be free from ambiguity, presented in plain English, and use accurate and consistent terminology and formatting. 
+- **Context (CON)**: The document should be presented with relevant context: intended audience, prerequisite knowledge, hardware and software requirements, links to associated content and resources, next steps. The document should clearly inform the user of what is contained within the page.
+- **Accuracy (ACC)**: The document should be accurate both technically and linguistically. The document should outline every step required of a user without assuming or skipping relevant steps.
+- **Organization (ORG)**: The document should be logically organized according to the task the reader wants to accomplish.
+- **Findability (FIN)**: The document should be named and structured in a way that allows users to find the document and move between relevant sections within the document.
 Evaluate and improve the content based on these categories:
 
 - **Readability (REA)**: The document should be easy to read for a variety of audiences, including screen-reader users, colorblind users, users whose native language isn't English, users on smaller screen sizes and widths. 
@@ -112,48 +181,125 @@ GET /api/data
 Authorization: Bearer YOUR_TOKEN
 
 We recommend storing tokens securely. Tokens will expire after 24 hours and a new one will need to be obtained.
+# API Authentication Guide
+
+The API authentication will be handled by JWT tokens. Tokens can be obtained from the developer portal.
+
+## Getting Your Token
+
+The following steps should be followed by developers:
+1. Login to the portal
+2. Your API key will be generated
+3. The token should be copied
+
+## Using the Token
+
+Once the token has been acquired, API requests can be made. The token needs to be included in the Authorization header.
+
+Example:
+GET /api/data
+Authorization: Bearer YOUR_TOKEN
+
+We recommend storing tokens securely. Tokens will expire after 24 hours and a new one will need to be obtained.
 ```
 
 #### Output
+```markdown
+**Revised Content:**
 
-```
-<Revised_Content>
 # API authentication guide
 
-Authenticate API requests with JWT tokens. You can obtain tokens from the developer portal.
+This guide explains how to obtain a JSON Web Token (JWT) from the developer portal and authenticate requests to the API.
 
-## Get your token
+## Get a token
 
-The following steps should be followed by developers:
-1. Log in to the portal.
-2. Generate your API key.
-3. Copy the token.
+1. Sign in to the developer portal.  
+2. Navigate to **API Keys** and select **Generate key**.  
+3. Copy the generated JWT.
 
-## Use the token
+## Send an authenticated request
 
-After you obtain the token, you can make API requests. Include the token in the Authorization header.
+Include the JWT in the `Authorization` header as a Bearer token:
 
-Example:
-`GET /api/data HTTP/1.1
-Authorization: Bearer _YOUR_TOKEN_`
+curl -X GET https://api.example.com/api/data \
+  -H "Authorization: Bearer *JWT_TOKEN*"
 
-Store tokens securely. Tokens expire after 24 hours, after which you must obtain a new one.
-</Revised_Content>
-
-<Changes_Made>
-1. Use sentence case for titles (Style Guide → Titles and headings). Keep the acronym API uppercase; lowercase the remaining words.
-2. Rewrite in active voice and present tense for clarity and concision (Style Guide → Voice and tone).
-3. Address the reader directly in second person (Style Guide → Person).
-4. Headings that explain what to do should use a present-tense verb phrase and sentence case (Style Guide → Titles and headings).
-5. Use imperative verbs, consistent structure, and end-of-sentence punctuation for procedural steps (Google → Procedures; Style Guide → Voice and tone).
-6. Convert heading to present-tense verb phrase and sentence case (Style Guide → Titles and headings).
-7. Switch to active voice and second person; replace vague passive construction (Style Guide → Voice and tone, Person).
-8. Use direct, imperative instruction and active voice (Style Guide → Voice and tone).
-9. Format the example as a fenced code block, label the HTTP verb GET, and use italicized UPPER_SNAKE_CASE for the placeholder (Style Guide → Code formatting, Placeholder text).
-10. Use imperative mood to give clear guidance (Style Guide → Voice and tone).
-11. Remove passive voice and clarify the action required (Style Guide → Voice and tone).
-</Changes_Made>
+**Note**: Store tokens securely. Each token expires after 24 hours. When a token expires, generate a new one through the developer portal.
 ```
+
+---
+
+**Changes Made:**
+
+1. Changed the page title to sentence case  
+   * **Original text**: `# API Authentication Guide`  
+   * **Revised Text**: `# API authentication guide`  
+   * **Explanation**: Converted to sentence case to comply with heading rules.  
+   * **Style Guidance**: "Use sentence case." — Style Guide, Titles and headings  
+   * **Rubric**: Focus remains on product education.  
+
+2. Added an introductory sentence for context  
+   * **Original text**: `The API authentication will be handled by JWT tokens. Tokens can be obtained from the developer portal.`  
+   * **Revised Text**: `This guide explains how to obtain a JSON Web Token (JWT) from the developer portal and authenticate requests to the API.`  
+   * **Explanation**: Gives readers immediate context and clarifies purpose.  
+   * **Style Guidance**: "When explaining what something does, use the present verb tense." — Style Guide, Titles and headings  
+   * **Rubric**: Improves clarity for product usage.  
+
+3. Renamed "Getting Your Token" heading and made it imperative  
+   * **Original text**: `## Getting Your Token`  
+   * **Revised Text**: `## Get a token`  
+   * **Explanation**: Uses imperative verb and sentence case.  
+   * **Style Guidance**: "Use sentence case." — Style Guide, Titles and headings  
+   * **Rubric**: Keeps focus on actionable steps.  
+
+4. Rewrote list steps in active voice and second person  
+   * **Original text**: `1. Login to the portal` / `2. Your API key will be generated` / `3. The token should be copied`
+   * **Revised Text**: `1. Sign in to the developer portal.` / `2. Navigate to **API Keys** and select **Generate key**.` / `3. Copy the generated JWT.`
+   * **Explanation**: Converts passive constructions to active voice and clarifies UI actions.  
+   * **Style Guidance**: "Emphasize action with active voice" & "Use second person." — Style Guide, Voice and tone / Person  
+   * **Rubric**: Enhances reader comprehension of steps.  
+
+5. Specified UI elements in bold  
+   * **Original text**: No UI elements identified.  
+   * **Revised Text**: `Navigate to **API Keys** and select **Generate key**.`  
+   * **Explanation**: Marks UI components per style guide.  
+   * **Style Guidance**: "Use bold for user interface items." — Style Guide, Bold  
+   * **Rubric**: Helps users locate UI items in portal.  
+
+6. Renamed "Using the Token" heading to describe action  
+   * **Original text**: `## Using the Token`  
+   * **Revised Text**: `## Send an authenticated request`  
+   * **Explanation**: Makes heading action-oriented and sentence case.  
+   * **Style Guidance**: "When explaining what something does, use the present verb tense." — Style Guide, Titles and headings  
+   * **Rubric**: Clarifies educational purpose.  
+
+7. Added code block for request example  
+   * **Original text**: `Example: GET /api/data Authorization: Bearer YOUR_TOKEN`
+   * **Revised Text**: Full curl example with proper formatting
+   * **Explanation**: Provides a realistic, copy-ready example and applies placeholder formatting.  
+   * **Style Guidance**: "Use code text for command line input." — Style Guide, Code text  
+   * **Rubric**: Gives practical usage example.  
+
+8. Replaced placeholder with italicized UPPER_SNAKE_CASE  
+   * **Original text**: `YOUR_TOKEN`  
+   * **Revised Text**: `*JWT_TOKEN*`  
+   * **Explanation**: Follows placeholder convention.  
+   * **Style Guidance**: "Write placeholder text in italicized UPPER_SNAKE_CASE." — Style Guide, Placeholder text  
+   * **Rubric**: Maintains documentation consistency.  
+
+9. Added secure-storage note in proper format  
+   * **Original text**: `We recommend storing tokens securely. Tokens will expire after 24 hours and a new one will need to be obtained.`  
+   * **Revised Text**: `**Note**: Store tokens securely. Each token expires after 24 hours. When a token expires, generate a new one through the developer portal.`
+   * **Explanation**: Uses "Note" pattern instead of free-form sentence and separates key details.  
+   * **Style Guidance**: "Begin with **Note**: …" — Style Guide, Callouts  
+   * **Rubric**: Highlights important operational detail for users.  
+
+10. Combined two passive sentences into one active instruction in the last paragraph  
+    * **Original text**: See item 9 original sentence.  
+    * **Revised Text**: Integrated into the note as active guidance.  
+    * **Explanation**: Streamlines content and removes redundancy.  
+    * **Style Guidance**: "Emphasize action with active voice." — Style Guide, Voice and tone  
+    * **Rubric**: Improves clarity and conciseness for readers.
 
 ## Contribution Guidelines
 
