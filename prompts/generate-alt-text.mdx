@@ -5,13 +5,12 @@ version: "1.0.0"
 variables:
   imagePath: "File path or filename of the uploaded image to generate alt text for. The key is that the LLM must be able to read the image contents."
 model_parameters:
-  temperature: 1.0
-  max_tokens: 256
+  temperature: 1.0 # First attempt, see OpenAI API Parameters section for retry value
+  max_tokens: 256 # First attempt, see OpenAI API Parameters section for retry value
   top_p: 1
   frequency_penalty: 0
   presence_penalty: 0
   recommended_models:
-    - "claude-3.5-sonnet" # Anthropic Claude 3.5 Sonnet, optimized for accessibility tasks
     - "gpt-4o" # GPT-4o, versatile and widely used for generating concise alt text
 metadata:
   author: "Docs AI Buddy Team"
@@ -89,31 +88,42 @@ A diagram showing a flowchart of API authentication steps with boxes for "Reques
 Flowchart showing API authentication process with three steps: Request Token, Validate Credentials, and Return Access Token.
 ```
 
-## Evaluation Notes
+## OpenAI API Parameters
 
-### Edge Cases
+Retry Attempt:
+- Model: gpt-4o
+- Temperature: 0.3 (reduced for more focused output)
+- Max Tokens: 50 (reduced to encourage brevity)
+- Additional Instructions: "IMPORTANT: The previous response was too long. Please create a shorter, more concise alt text under 125 characters."
 
-- **Images with Excessive Text**: Prioritize the most important information to stay within the character limit.
-- **Low Quality or Blurry Images**: Focus on what can be reasonably identified.
-- **Complex Technical Diagrams**: Provide a high-level summary rather than describing every element.
-- **Screenshots with UI Elements**: Focus on the purpose of the UI rather than describing every button and element.
-- **Images with Multiple Distinct Sections**: Prioritize the main subject while acknowledging other important elements.
+### Retry Mechanism Notes
+**Strategy:** Adaptive retry with intelligent fallback
+
+1. First Attempt: Uses standard parameters with full creative freedom (temperature=1, max_tokens=256)
+
+2. Length Check: After receiving response, validates that alt text ≤ 125 characters
+
+3. Retry Trigger: If length > 125 characters:
+    - Logs warning with actual length
+    - Makes ONE retry attempt (cost control: max 1 retry)
+      - Adjusts parameters to encourage brevity:
+      - Lower temperature (0.3) for more deterministic output
+      - Reduced max tokens (50) to limit response length
+      - Appends explicit instruction about the length requirement
+4. Final Fallback: If retry still produces text > 125 characters:
+    - Logs second warning
+    - Intelligently truncates to 125 characters:
+      - Finds last complete word before character 122
+      - If last space is after position 100, uses that boundary
+      - Adds ellipsis (...) to indicate truncation
+      - Otherwise truncates at 122 and adds ellipsis
+
+**Cost Optimization:** Limited to 1 retry attempt to prevent excessive API costs while still improving accuracy.
 
 ### Failure Modes
 
 - **Exceeding Character Limit**: May generate alt text that exceeds the 125 character limit, requiring truncation.
 - **Missing Critical Information**: Might focus on less important visual elements while missing the core purpose of the image.
-- **Over-describing**: Can sometimes provide excessive detail for simple images, adding unnecessary information.
-- **Misidentification**: May incorrectly identify elements in complex or ambiguous images.
-- **Generic Descriptions**: Sometimes generates vague descriptions that don't add meaningful context (e.g., "Screenshot of a webpage").
-
-### Improvement Suggestions
-
-1. Add functionality to handle image context from surrounding document text.
-2. Implement tiered alt text generation (brief and detailed versions).
-3. Create specialized handling for common technical image types (code snippets, API responses, error messages).
-4. Add option to generate both alt text and longer descriptions for complex images.
-5. Implement detection for decorative images that may require minimal alt text.
 
 ## Learn More
 
