@@ -1,7 +1,7 @@
 ---
 title: "Generate Metadata"
 description: "Creates optimized SEO meta titles and descriptions for documentation pages"
-version: "1.0.0"
+version: "1.1.0"
 variables:
   content: "The documentation content to generate metadata for"
   additionalContext: "Optional additional context to help optimize the metadata"
@@ -26,45 +26,88 @@ metadata:
 ## Full Metadata Generation Prompt (Title and Description)
 
 ```
-As a world-class Search Engine Optimization (SEO) expert, your task is to create an optimized meta title and meta description for the provided content. Using your expertise in keyword research, SEO-friendly content creation, and understanding of search engine algorithms, create compelling and effective metadata that will boost search engine rankings.
+Role: SEO Expert & Documentation Engineer. Generate high-converting, search-optimized metadata.
 
-Requirements:
-- Meta title must be 55 characters or less.
-- Meta description must be 160 characters or less.
-- Be compelling for users to click through.
-- Use active voice and clear language.
-- Accurately summarize the key value proposition.
-- Include the character count for both the title and description in parentheses after each suggestion.
-- Provide 3 samples for both the meta title and meta description.
+Input Content: {{content}}{{additionalContext}}
 
-Format EXACTLY as follows:
-Title: [Your title here] (XX characters)
-Description: [Your description here] (XX characters)
+STEP 1: SEMANTIC ANALYSIS
+Consider for your writing:
+- Search Intent: Informational / How-to/Technical / Reference
+- Primary Keyword: Most important technical entity or action
+- Target Audience: Developers / DevOps / Business Decision Makers
 
-Content:
-{{content}}
-{{additionalContext}}
+STEP 2: REQUIREMENTS
+
+Meta Title:
+* Format: [Keyword Phrase] | [Product/Brand Name]
+* Max 55 characters
+* Must not start with brand names
+
+Meta Description:
+* Length: 140-155 characters
+* Active voice with action verb (Learn, Build, Configure, Deploy, Integrate, etc.)
+* Primary keyword in first 60 characters
+* Don't repeat title verbatim
+* Include specific benefits/features and secondary keywords
+
+STEP 3: STYLE CONSTRAINTS
+* No exclamation points
+* Avoid: leverage, easy, simple, seamless, revolutionary, power, unlock, ultimate
+* Tone: Factual, objective, utility-driven (no marketing fluff)
+
+STEP 4: OUTPUT FORMAT
+Provide exactly 3 distinct samples with character counts in parentheses.
+
+Option 1:
+Title: [Your Title] (XX characters)
+Description: [Your Description] (XXX characters)
+
+Option 2:
+Title: [Your Title] (XX characters)
+Description: [Your Description] (XXX characters)
+
+Option 3:
+Title: [Your Title] (XX characters)
+Description: [Your Description] (XXX characters)
 ```
 
 ## Description-Only Prompt
 
 ```
-As a world-class Search Engine Optimization (SEO) expert, your task is to create an optimized meta description for the provided content. Using your expertise in keyword research, SEO-friendly content creation, and understanding of search engine algorithms, create a compelling and effective meta description that will boost search engine rankings.
+Role: SEO Expert & Documentation Engineer. Generate high-converting, search-optimized metadata.
 
-Requirements:
-- Meta description must be 160 characters or less.
-- Be compelling for users to click through.
-- Use active voice and clear language.
-- Accurately summarize the key value proposition.
-- Include the character count for the description in parentheses after each suggestion.
-- Provide 3 samples for the meta description.
+Input Content: {{content}}{{additionalContext}}
 
-Format EXACTLY as follows:
-Description: [Your description here] (XX characters)
+STEP 1: SEMANTIC ANALYSIS
+Consider for your writing:
+- Search Intent: Informational / How-to/Technical / Reference
+- Primary Keyword: Most important technical entity or action
+- Target Audience: Developers / DevOps / Business Decision Makers
 
-Content:
-{{content}}
-{{additionalContext}}
+STEP 2: REQUIREMENTS
+
+Meta Description:
+* Length: 140-155 characters
+* Active voice with action verb (Learn, Build, Configure, Deploy, Integrate, etc.)
+* Primary keyword in first 60 characters
+* Each sample highlights different feature/benefit
+
+STEP 3: STYLE CONSTRAINTS
+* No exclamation points
+* Avoid: leverage, easy, simple, seamless, revolutionary, power, unlock, ultimate
+* Tone: Factual, objective, utility-driven (no marketing fluff)
+
+STEP 4: OUTPUT FORMAT
+Provide exactly 3 distinct samples with character counts in parentheses.
+
+Option 1:
+Description: [Your Description] (XXX characters)
+
+Option 2:
+Description: [Your Description] (XXX characters)
+
+Option 3:
+Description: [Your Description] (XXX characters)
 ```
 
 ## Examples
@@ -81,8 +124,17 @@ This guide shows you how to send SMS messages using an API. You'll learn how to 
 #### Output
 
 ```
+Option 1:
 Title: Send Your First SMS Message with an API (48 characters)
 Description: Learn how to set up your environment, authenticate requests, and send SMS messages using an API in this step-by-step guide for developers new to messaging. (156 characters)
+
+Option 2:
+Title: SMS Messaging API Guide for Developers (40 characters)
+Description: Build your first SMS integration with our step-by-step guide covering environment setup, authentication, and message delivery for developers. (155 characters)
+
+Option 3:
+Title: Get Started with SMS API Integration (39 characters)
+Description: Configure your development environment and send SMS messages with straightforward authentication steps. Complete guide for developers building messaging applications. (154 characters)
 ```
 
 ### Evaluation Notes
@@ -93,12 +145,12 @@ Description: Learn how to set up your environment, authenticate requests, and se
 - **Multiple Key Topics**: Prioritize the most important aspects for the metadata.
 - **Very Short Content**: Extract the core value proposition without embellishment.
 - **Content with Code Examples**: Focus on the purpose of the code rather than specific implementation details.
-- **Marketing-Heavy Content**: Extract substantive information and present it in a direct, technical manner.
+- **Complex Procedures**: Break down into digestible core action and benefit in the metadata.
 
 #### Failure Modes
 
 - **Exceeding Character Limits**: May generate titles or descriptions that exceed the specified character limits.
-- **Starting with Brand Names**: May incorrectly start titles with brand names despite instructions.
+- **Brand Name Starting**: May incorrectly begin titles with brand names despite instructions.
 - **Generic Descriptions**: Sometimes produces vague descriptions that don't capture the unique value of the content.
 - **Keyword Stuffing**: May overload metadata with keywords at the expense of readability.
 - **Missing Key Value Propositions**: Might focus on secondary aspects while missing the primary purpose of the content.
@@ -109,4 +161,4 @@ Description: Learn how to set up your environment, authenticate requests, and se
 2. Include competitor analysis to differentiate content positioning.
 3. Implement A/B testing capability with multiple metadata variants.
 4. Add support for localization considerations in different markets.
-5. Create vertical-specific optimizations for different industries.
+5. Create domain-specific optimizations (API docs vs. tutorials vs. reference guides).
