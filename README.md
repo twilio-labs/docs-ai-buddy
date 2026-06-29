@@ -6,6 +6,10 @@ A collection of optimized prompts for documentation-related AI agents.
 
 Docs AI Buddy is a tool designed to assist documentation teams with AI-driven workflows. It provides prompts for simplifying jargon, generating alt text, editing documents, and more.
 
+> [!TIP]
+> Watch the quickstart:
+> [Docs AI Buddy on Loom](https://www.loom.com/share/5c298e764c7747a583b91036c7ad5539)
+
 Docs AI Buddy was featured at these conferences. Watch the videos below to learn more:
 
 - **AI Engineer Conference**: [Watch the presentation](https://www.youtube.com/watch?v=pSqpC7fFLZA)
