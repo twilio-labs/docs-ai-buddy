@@ -155,7 +155,7 @@ products_used:
 This error occurs when a call is placed to an invalid number.
 ```
 
-Product Slugs: `voice, messaging, video, sip-trunking, verify`
+Product Slugs: `example-product1, example-product2, example-product3, example-product4`
 
 #### Output
 
@@ -199,6 +199,48 @@ A fully complete error code page with all frontmatter fields populated and all c
 
 ```
 I can't find anything to add to this page.
+```
+
+### Negative Examples (DO NOT produce output like this)
+
+These examples illustrate common failure modes that contributors should avoid when adapting this template:
+
+**BAD — Using semicolons instead of two separate sentences:**
+
+```markdown
+The API signs webhooks with a signature header; for JSON requests, validate the body.
+```
+
+**GOOD:**
+
+```markdown
+The API signs webhooks with a signature header. For JSON requests, validate the body.
+```
+
+**BAD — Self-referential error dictionary link (circular reference):**
+
+```markdown
+#### Additional resources
+- [Error and Warning Dictionary](/docs/{error-page-you-are-updating})
+```
+
+**GOOD — Links to relevant product docs instead:**
+
+```markdown
+#### Additional resources
+- [Product 1 Overview](/docs/{product-1})
+```
+
+**BAD — Over-using backticks on non-code terms:**
+
+```markdown
+This error occurs when the `user` tries to `send` a `message` to an `invalid` number.
+```
+
+**GOOD — Backticks only for code-like elements:**
+
+```markdown
+This error occurs when the user tries to send a message to an invalid number using the `To` parameter.
 ```
 
 ## Configuration Guide
