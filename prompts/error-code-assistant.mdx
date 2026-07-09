@@ -7,13 +7,13 @@ variables:
   productSlugs: "A YAML list of valid product slugs for the products_used frontmatter field"
   approvedSources: "List of approved documentation sources (URLs) that the assistant should reference for accuracy"
 model_parameters:
-  temperature: 0 # Ensures deterministic, consistent output for documentation accuracy and repeatable edits
+  text_format: text
+  reasoning_effort: medium # Ensures thorough, accurate output for documentation edits
+  reasoning_verbosity: medium
   max_completion_tokens: 16000 # Set a high token limit to avoid truncation
-  frequency_penalty: 0
-  presence_penalty: 0
+  reasoning_summary: auto
   recommended_models:
-    - "claude-sonnet-4-6" # Strong at structured output and following formatting constraints
-    - "gpt-4o" # Versatile and widely accessible for general use
+    - "gpt-5.4"
 metadata:
   author: "Docs AI Buddy Team"
   created_at: "2026-06-30T00:00:00Z"
