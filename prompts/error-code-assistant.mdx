@@ -1,0 +1,357 @@
+---
+title: "Error Code Assistant"
+description: "Edits and completes error code documentation pages with accurate frontmatter and structured content"
+version: "1.0.0"
+variables:
+  errorPage: "The error code documentation page (MDX) to review and complete"
+  productSlugs: "A YAML list of valid product slugs for the products_used frontmatter field"
+  approvedSources: "List of approved documentation sources (URLs) that the assistant should reference for accuracy"
+model_parameters:
+  text_format: text
+  reasoning_effort: medium # Ensures thorough, accurate output for documentation edits
+  reasoning_verbosity: medium
+  max_completion_tokens: 16000 # Set a high token limit to avoid truncation
+  reasoning_summary: auto
+  tools_type: "web_search" # Allows the assistant to search for content from your approved sources list
+  recommended_models:
+    - "gpt-5.4"
+metadata:
+  author: "Docs AI Buddy Team"
+  created_at: "2026-06-30T00:00:00Z"
+  tags:
+    - "documentation"
+    - "error-codes"
+    - "frontmatter"
+    - "structured-content"
+---
+
+# Error Code Assistant Prompt
+
+This document provides an overview of the "Error Code Assistant" prompt, designed to edit and update error code documentation pages. It ensures all frontmatter fields and content sections are complete, accurate, and written in a direct, instructional voice. Contributors can use this guide to understand the prompt's functionality and suggest improvements.
+
+## Prerequisites
+
+1. **Customize the prompt**: Before using, you must adapt the prompt template (below) to your documentation structure. As a general rule, customize all sections marked with `[CUSTOMIZE]`. See the [Customization Checklist](#customization-checklist) for required changes.
+2. **Set your variables**: Define `errorPage`, `productSlugs`, and `approvedSources` in your prompt execution environment.
+3. **Run the prompt**: Pass your incomplete error code page as the `errorPage` variable to an LLM using the customized prompt template.
+4. **Review output**: The assistant returns a completed MDX file or indicates if no improvements are needed.
+
+## Customization Checklist
+
+Before using this prompt, customize these sections to match your platform:
+
+- [ ] **Frontmatter schema** (lines 88-98 in Output Format): Update field names, types, and structure to match your MDX template
+- [ ] **Code formatting rules** (line 56 in the Prompt): Update examples (e.g., XML tags, E.164) to match your domain's common patterns
+- [ ] **Content section structure** (lines 100-110 in Output Format): Adjust section names and requirements to match your template
+- [ ] **Link formatting rules** (lines 63-68 in the Prompt): Update to match your internal documentation linking conventions
+- [ ] **Variables**: Set `productSlugs` and `approvedSources` for your platform
+
+See the [Configuration Guide](#configuration-guide) below for detailed instructions.
+
+## Prompt Overview
+
+The Error Code Assistant reviews error code MDX pages, fills in missing or empty frontmatter fields, validates content against approved sources, and outputs a complete, structured error code page.
+
+## Prompt 
+
+> **Important**: The prompt below contains examples and categories from Twilio's documentation. You must customize the sections marked with `[CUSTOMIZE]` before using this with your own platform. See the [Customization Checklist](#customization-checklist) above.
+
+```
+You are a world-class English technical writing editor. Edit and update error code documentation pages to ensure all frontmatter and content sections are complete, accurate, and written in a direct, instructional voice.
+
+[CUSTOMIZE: Update the frontmatter field names and requirements below to match your MDX template schema.]
+Before you begin, rigorously check all required frontmatter fields (`log_type`, `log_level`, `products_used`). If any field is empty or null, you must determine and fill in the correct value or remove them entirely based on the page content and your knowledge of the platform.
+
+All documentation content (including all sections) must be written in a direct, instructional voice as if authoring official product documentation. Never use self-referential language such as "the docs state," "according to the documentation," or similar. Address the reader directly.
+
+All claims, solutions, and examples must be sourced from the approved documentation sources listed below. Never fabricate claims or sources.
+
+[CUSTOMIZE: Update the code formatting examples below to match patterns common in your domain. For example, if documenting REST APIs, you might use `GET`, `POST`, `Authorization`, `application/json` as examples instead of XML tags and phone number formats.]
+When formatting, wrap code, XML tags, parameters, method names, or configuration-like keywords in backticks (`) only if omitting them would cause a lint or rendering error (e.g., `<Reject>`, `To`, `E.164`). Never use backticks around numeric-only error codes or product/brand names.
+
+Return strictly and only the full, completed MDX file, using the structured Markdown template below, ending after the last link in the `#### Additional resources` section. Do not include summaries, post-content validations, notes, or any further explanations outside the completed MDX.
+
+If a required field is missing or ambiguous, explicitly flag: "Missing required field: ..." or "Could you specify the error code or API feature you're referring to?" as needed.
+
+If documentation cannot be improved with new information, respond: "I can't find anything to add to this page."
+
+[CUSTOMIZE: Adjust the resource limit and link formatting rules below to match your documentation conventions. For example, you might allow more than three resources, or require all links to be absolute URLs.]
+Strictly limit "Additional resources" to three or fewer items. Only embed links in that section, using relative Markdown links for internal docs and full URLs for external sources.
+
+Never use semicolons (`;`) in content. Split into two sentences with a period instead.
+
+[CUSTOMIZE: Update or remove this rule based on your documentation structure. If you don't have error dictionary pages, remove this instruction.]
+Never link to error dictionary pages or other error code pages in Additional resources. These create circular references. Link only to product docs, guides, API references, or help articles.
+
+Approved documentation sources:
+{{approvedSources}}
+
+Product slugs for use in `products_used`:
+{{productSlugs}}
+
+# Steps
+
+1. [CUSTOMIZE: Update the frontmatter field names and requirements to match your MDX template schema. If any field is empty or null, you must determine and fill in the correct value or remove them entirely based on the page content and your knowledge of the platform.] Review all frontmatter fields. For any empty or null field, use context and domain knowledge to correctly populate `log_type`, `log_level`, and `products_used` (using only approved product slugs).
+2. Prepare a checklist of conceptual sub-tasks required to perform the edit.
+3. Validate all error information solely against approved sources.
+4. Write updated output using only the Markdown template, observing all structure, code formatting, section requirements, and tone rules.
+5. [CUSTOMIZE: Update this step to match your link formatting and resource limit requirements.] Ensure "Additional resources" section uses embedded links only and contains no more than three items.
+6. Ensure output ONLY consists of the final, full MDX file—ending precisely after the last resource link, with no summary or post-content remarks.
+
+# Output Format
+
+[CUSTOMIZE: This entire template section must be replaced with your own MDX schema. Update all frontmatter fields, section headings, and structure to match your documentation template. The example below is from Twilio's platform.]
+
+- Output a single, complete MDX documentation file using the following section structure:
+    ---
+    page_type: error
+    code: [Error Code]
+    message: >-
+      [Error Title]
+    log_level: [ERROR | WARNING]
+    log_type: [APPLICATION | CARRIER | SYSTEM]
+    products_used:
+      - [Select a product from the product list]
+      - [If multiple, list each as an item]
+    ---
+
+    ## Description
+    [Concise, properly sourced summary. Wrap only code/code-like/code-related keywords in backticks.]
+
+    ### Possible causes
+    - [Each vetted cause as a bullet. Only wrap code/code-like/keywords in backticks.]
+
+    ### Possible solutions
+    - [Each recommended solution as a bullet; follow backtick rule strictly.]
+
+    #### Additional resources 
+    - [Up to three embedded documentation or help links, formatted as described.]
+
+- Do NOT include markdown code fences, summaries, notes, validations, or citations after the `#### Additional resources` section. The response must END there.
+
+# Error Page to Edit
+
+{{errorPage}}
+```
+
+## Examples
+
+### Example 1: Completing missing frontmatter fields
+
+#### Input
+
+Error Page:
+```
+---
+page_type: error
+code: 21218
+message: >-
+  Invalid Called Number
+log_level:
+log_type:
+products_used:
+---
+
+## Description
+This error occurs when a call is placed to an invalid number.
+```
+
+Product Slugs: `example-product1, example-product2, example-product3, example-product4`
+
+#### Output
+
+```
+---
+page_type: error
+code: 21218
+message: >-
+  Invalid Called Number
+log_level: ERROR
+log_type: APPLICATION
+products_used:
+  - voice
+---
+
+## Description
+This error is generated when an outbound call attempts to reach a number that is not recognized as valid in `E.164` format, or the `To` parameter does not meet requirements.
+
+### Possible causes
+- The `To` parameter was not provided in `E.164` format.
+- The destination number is invalid or contains non-numeric characters.
+- An unsupported prefix was used.
+
+### Possible solutions
+- Format the `To` parameter in `E.164` (e.g., `+14155552671`).
+- Remove extra or invalid symbols from the target number.
+- Verify the destination is a valid, routable phone number.
+
+#### Additional resources
+- [Programmable Voice Overview](/docs/voice)
+- [Making Calls with the Voice API](/docs/voice/make-calls)
+```
+
+### Example 2: Page that needs no changes
+
+#### Input
+
+A fully complete error code page with all frontmatter fields populated and all content sections filled.
+
+#### Output
+
+```
+I can't find anything to add to this page.
+```
+
+### Negative Examples (DO NOT produce output like this)
+
+These examples illustrate common failure modes that contributors should avoid when adapting this template:
+
+**BAD — Using semicolons instead of two separate sentences:**
+
+```markdown
+The API signs webhooks with a signature header; for JSON requests, validate the body.
+```
+
+**GOOD:**
+
+```markdown
+The API signs webhooks with a signature header. For JSON requests, validate the body.
+```
+
+**BAD — Self-referential error dictionary link (circular reference):**
+
+```markdown
+#### Additional resources
+- [Error and Warning Dictionary](/docs/{error-page-you-are-updating})
+```
+
+**GOOD — Links to relevant product docs instead:**
+
+```markdown
+#### Additional resources
+- [Product 1 Overview](/docs/{product-1})
+```
+
+**BAD — Over-using backticks on non-code terms:**
+
+```markdown
+This error occurs when the `user` tries to `send` a `message` to an `invalid` number.
+```
+
+**GOOD — Backticks only for code-like elements:**
+
+```markdown
+This error occurs when the user tries to send a message to an invalid number using the `To` parameter.
+```
+
+## Configuration Guide
+
+### Required Variables
+
+These variables must be set when executing the prompt:
+
+**`errorPage`** (string)
+The complete MDX content of the error code page you want to review and complete. Paste the entire file content, including frontmatter.
+
+**`productSlugs`** (string or YAML list)
+Your platform's product identifiers. The assistant will use these to populate the `products_used` frontmatter field.
+
+Example (comma-separated):
+```
+voice, messaging, video, auth, api, serverless, sip-trunking
+```
+
+Example (YAML):
+```yaml
+- authentication
+- database
+- storage
+- compute
+- networking
+```
+
+**`approvedSources`** (list of URLs)
+Official documentation URLs that the assistant should reference for accuracy. The assistant will validate all claims against these sources.
+
+Example:
+```yaml
+- https://docs.yourplatform.com/
+- https://help.yourplatform.com/
+- https://api.yourplatform.com/reference/
+```
+
+### Customizing the Prompt Template
+
+The prompt template contains several Twilio-specific elements that you must adapt:
+
+#### 1. Update log_type categories
+
+**Location**: Lines 48-52 in the prompt template (inside the `[CUSTOMIZE]` marker)
+
+**Default** (Twilio platform):
+- `APPLICATION`: User request/configuration errors
+- `CARRIER`: Twilio carrier network errors
+- `SYSTEM`: Platform internal system errors
+
+**Example adaptation for a SaaS API**:
+- `CLIENT`: Client-side errors (invalid requests, auth failures)
+- `SERVER`: Server-side errors (database issues, internal failures)
+- `THIRD_PARTY`: External service/integration errors
+
+**How to customize**: Replace all three category names and their descriptions throughout the prompt template.
+
+#### 2. Update code formatting examples
+
+**Location**: Line 61 in the prompt template (inside the `[CUSTOMIZE]` marker)
+
+**Default** (Twilio examples): `<Reject>`, `To`, `E.164` (XML tags and phone formats)
+
+**Example adaptation for a REST API**: `GET`, `POST`, `Authorization`, `Content-Type`, `application/json`
+
+**How to customize**: Replace the examples in parentheses with patterns common in your documentation.
+
+#### 3. Update MDX template structure
+
+**Location**: Lines 103-123 in the Output Format section
+
+**What to customize**:
+- Frontmatter field names and types
+- Section headings (`## Description`, `### Possible causes`, etc.)
+- Required vs. optional sections
+- Link formatting rules
+
+**Example**: If your error pages use `severity` instead of `log_level`, update all references in the prompt.
+
+#### 4. Adjust link and resource rules
+
+**Location**: Lines 68-74 in the prompt template
+
+**What to customize**:
+- Maximum number of resources (default: 3)
+- Link format (relative vs. absolute URLs)
+- Prohibited link targets (e.g., "never link to error dictionary pages")
+
+Remove rules that don't apply to your documentation structure.
+
+## Evaluation Notes
+
+### Edge Cases
+
+- **Missing all frontmatter fields**: The assistant must infer all values from the page content and platform knowledge.
+- **Ambiguous error source**: When an error could originate from multiple sources, the assistant should choose the most likely `log_type` and explain its reasoning only if explicitly asked.
+- **No approved product slug matches**: The assistant should flag this rather than guessing.
+- **Circular resource links**: The assistant must never link back to error dictionaries or other error pages.
+
+### Failure Modes
+
+- **Hallucinated sources**: May generate plausible-looking URLs that do not exist. Always validate against approved sources.
+- **Over-use of backticks**: May wrap product names or plain-English terms in backticks unnecessarily.
+- **Semicolons in output**: May use semicolons despite instructions to avoid them.
+- **Extra content after resources**: May append summaries or validation notes after the last resource link.
+- **Circular links**: May link to error dictionary pages despite instructions to avoid this.
+
+### Improvement Suggestions
+
+1. Add a validation step that checks generated URLs against a known sitemap.
+2. Include a linting pass for backtick usage to catch formatting errors.
+3. Implement a confidence score for inferred frontmatter values.
