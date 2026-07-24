@@ -23,6 +23,7 @@ The repository currently includes the following prompts:
 2. **[Generate Alt Text](prompts/generate-alt-text.mdx)** - Creates concise and informative alt text for images.
 3. **[Auto Edit Document](prompts/auto-edit-document.mdx)** - Improves documentation based on style guides and rubrics.
 4. **[Generate Metadata](prompts/generate-metadata.mdx)** - Generates SEO meta titles and descriptions.
+5. **[Error Code Assistant](prompts/error-code-assistant.mdx)** - Edits and completes error code documentation pages with accurate frontmatter and structured content.
 
 Each prompt includes:
 
