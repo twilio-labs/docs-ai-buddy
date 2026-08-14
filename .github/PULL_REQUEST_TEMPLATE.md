@@ -27,6 +27,7 @@ Please select the options that are relevant:
 - [ ] Generate Alt Text prompt
 - [ ] Auto Edit Document prompt
 - [ ] Generate Metadata prompt
+- [ ] Update the Error Code Documentation prompt
 
 ## Testing checklist
 
